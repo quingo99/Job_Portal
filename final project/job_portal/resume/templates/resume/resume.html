@@ -1,0 +1,86 @@
+{% extends "mainpage/header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Personal Information -->
+    <div class="row">
+        <div class="col-12 text-center mb-4">
+            <h1>{{ resume.first_name }} {{ resume.last_name }}</h1>
+            <p>Phone: {{ resume.phone }} | Email: {{ resume.email }}</p>
+            <p>LinkedIn: <a href="{{ resume.linkedIn }}" target="_blank">{{ resume.linkedIn }}</a></p>
+        </div>
+    </div>
+
+    <!-- Resume Summary -->
+    <div class="row">
+        <div class="col-12">
+            <h2>Summary</h2>
+            <p>{{ resume.summary }}</p>
+        </div>
+    </div>
+    <hr style="border: 1px solid #000;">
+    <!-- Experience Section -->
+    <div class="row">
+        <div class="col-12">
+            <h2>Experience</h2>
+            {% for experience in resume.experiences.all %}
+            <div class="mb-3">
+                <h3>{{ experience.title }} at {{ experience.company }}</h3>
+                <p><small>{{ experience.start_date }} - {{ experience.end_date|default:"Present" }}</small></p>
+                <p>{{ experience.description }}</p>
+            </div>
+            {% empty %}
+            <p>No experiences listed.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <hr style="border: 1px solid #000;">
+    <!-- Education Section -->
+    <div class="row">
+        <div class="col-12">
+            <h2>Education</h2>
+            {% for education in resume.education.all %}
+            <div class="mb-3">
+                <h3>{{ education.institution }}</h3>
+                <p>{{ education.degree }}, {{ education.field_of_study }}</p>
+                <p><small>{{ education.start_date }} - {{ education.end_date|default:"Present" }}</small></p>
+                <p>{{ education.description }}</p>
+            </div>
+            {% empty %}
+            <p>No education details listed.</p>
+            {% endfor %}
+        </div>
+    </div>
+<hr style="border: 1px solid #000;">
+    <!-- Skills Section -->
+    <div class="row">
+        <div class="col-12">
+            <h2>Skills</h2>
+            <ul class="list-unstyled">
+                {% for skill in resume.skills.all %}
+                <li>{{ skill.skill_name }}: {{ skill.description }}</li>
+                {% empty %}
+                <li>No skills listed.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+<hr style="border: 1px solid #000;">
+    <!-- Certifications Section -->
+    <div class="row">
+        <div class="col-12">
+            <h2>Certifications</h2>
+            {% for certification in resume.certifications.all %}
+            <div class="mb-3">
+                <h3>{{ certification.name }}</h3>
+                <p>Issued by: {{ certification.issuing_organization }}</p>
+                <p><small>Date: {{ certification.issue_date }} - {{ certification.expiration_date|default:"No Expiry"
+                    }}</small></p>
+            </div>
+            {% empty %}
+            <p>No certifications listed.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

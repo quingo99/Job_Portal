@@ -1,0 +1,42 @@
+"""
+URL configuration for job_portal project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from django.contrib.auth import views as authentication_views
+from mainsite import views as mainsite_views
+from users import views as user_views
+from resume import views as resume_views
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', mainsite_views.homepage, name='home'),
+    path('profile/', mainsite_views.profile, name='profile'),
+    path('job_posting/', mainsite_views.job_posting, name='job_posting'),
+    path('detail/<int:job_id>', mainsite_views.job_detail, name= 'detail'),
+    path('job_listing/', mainsite_views.job_listing, name='job_listing'),
+    path('job_update/<int:job_id>', mainsite_views.job_update, name='job_update'),
+    path('applicant_list/<int:job_id>', mainsite_views.applicant_list, name='applicant_list'),
+    path('register/', user_views.register, name='register'),
+    path('login/', authentication_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('logout/', authentication_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('resume_create/', resume_views.resume_create, name='resume_create'),
+    path('resume/', resume_views.resume, name='resume')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

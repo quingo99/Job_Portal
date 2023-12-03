@@ -1,0 +1,15 @@
+.bolder-border {
+    border: 2px solid #ccc !important;
+
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f2f8f8 !important;
+    color: #685b5b !important;
+    line-height: 1.6;
+}
+
+.wide-input {
+    width: 100%;
+    max-width: 10000px;
+}

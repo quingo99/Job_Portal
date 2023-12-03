@@ -1,0 +1,42 @@
+{% extends "mainpage/nav.html" %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h2>{{ job.title }}</h2>
+        <h4>{{ job.employer.name }}</h4>
+        <hr>
+        <div><strong>Job type:</strong> {{ job.job_type }}</div>
+        <div><strong>Location:</strong> {{ job.location }}</div>
+        <div><strong>Address:</strong> {{ job.address.street }} {{ job.address.city }} {{ job.address.state }},
+            {{job.address.zip }}
+        </div>
+        <hr>
+        <h3>Description</h3>
+        <p>{{ job.description }}</p>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 mx-auto">
+            <form method="POST">
+                {% csrf_token %}
+                 {% if is_authorize is False and role == "Applicant"%}
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                 {% endif %}
+                {%if role == "Employer" and is_authorize %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-primary btn-block" href="{% url 'job_update' job.id %}">Edit</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn btn-primary btn-block" href="{% url 'applicant_list' job.id %}">See Who Apply</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

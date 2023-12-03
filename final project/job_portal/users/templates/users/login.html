@@ -1,0 +1,27 @@
+{% extends "mainpage/header.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card fix-col">
+        <div class="card-header ">
+            <div class="card-title">
+                Login
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {%csrf_token %}
+                <div class="form-group mt-5">
+                    {% for field in form %}
+                    <div class="form-group mt-5">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="Submit" class="btn btn-dark mt-5">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

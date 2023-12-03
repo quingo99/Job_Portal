@@ -1,0 +1,30 @@
+{% extends "mainpage/nav.html" %}
+
+{% block body %}
+
+<div class="container mt-4">
+    <h2>Applicants for the Job</h2>
+    <div class="list-group">
+        {% for applicant in applicants %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ applicant.first_name }} {{ applicant.last_name }}</h5>
+                </div>
+                <p class="mb-1">Phone: {{ applicant.phone }}</p>
+                <p class="mb-1">Email: {{ applicant.user.email }}</p>
+                <p class="mb-1">
+                    LinkedIn: <a href="{{ applicant.linkedin_url }}" target="_blank">{{ applicant.linkedin_url }}</a>
+                </p>
+                {% if applicant.resume %}
+                    <a href="{{ applicant.resume.url }}" class="btn btn-primary" download>Download Resume</a>
+                {% else %}
+                    <p>No resume available</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No applicants have applied for this job yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

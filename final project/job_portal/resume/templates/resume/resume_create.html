@@ -1,0 +1,113 @@
+{% extends "mainpage/header.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <form method="POST" action="" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <h2>Create Your Resume</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Personal Information</h5>
+                {{ resume_form.as_p}}
+            </div>
+        </div>
+        <div class="card mb-4" id="formset-experiences">
+
+            <div class="card-body">
+                <h5 class="card-title">Work Experience</h5>
+                 {{ experience_form.management_form }}
+            </div>
+            <div id="experiences-form-container">
+                {% for form in experience_form %}
+                    <div class="form-group border p-3 mb-2">
+                        {{ form.as_p }}
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- The button is now outside the forms container -->
+            <button type="button" class="btn btn-secondary add-form" data-formset="experiences">Add Experience</button>
+        </div>
+        <div class="card mb-4" id="formset-education">
+             <div class="card-body">
+                <h5 class="card-title">Education</h5>
+                  {{ education_form.management_form }}
+            </div>
+            <div id="education-form-container"> <!-- Container for the experiences forms -->
+                {% for form in education_form %}
+                    <div class="form-group border p-3 mb-2">
+                        {{ form.as_p }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-secondary add-form" data-formset="education">Add Education</button>
+        </div>
+         <div class="card mb-4" id="formset-skills">
+            <div class="card-body">
+                <h5 class="card-title">Skills</h5>
+                  {{ skill_form.management_form }}
+            </div>
+            <div id="skills-form-container"> <!-- Container for the experiences forms -->
+                {% for form in skill_form %}
+                    <div class="form-group border p-3 mb-2">
+                        {{ form.as_p }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-secondary add-form" data-formset="skills">Add Skill</button>
+        </div>
+
+         <div class="card mb-4" id="formset-certification">
+
+             <div class="card-body">
+                 <h5 class="card-title">Certifications</h5>
+                  {{ certification_form.management_form }}
+            </div>
+
+            <div id="certification-form-container">
+                {% for form in certification_form %}
+                    <div class="form-group border p-3 mb-2">
+                        {{ form.as_p }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-secondary add-form" data-formset="certification">Add Certification</button>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Save Resume</button>
+    </form>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.add-form').click(function() {
+        const formsetType = $(this).data('formset');
+        const totalForms = $('#id_' + formsetType + '-TOTAL_FORMS');
+        const formsetContainer = $('#' + formsetType + '-form-container');
+        const formCount = parseInt(totalForms.val(), 10);
+        const newForm = formsetContainer.find('.form-group').last().clone();
+
+        newForm.find('input, select, textarea, label').each(function() {
+            if ($(this).is('label')) {
+                // Update labels
+                let newFor = $(this).attr('for').replace('-' + (formCount - 1) + '-', '-' + formCount + '-');
+                $(this).attr('for', newFor);
+            } else {
+                // Update other fields
+                let name = $(this).attr('name').replace('-' + (formCount - 1) + '-', '-' + formCount + '-');
+                let id = $(this).attr('id').replace('-' + (formCount - 1) + '-', '-' + formCount + '-');
+                $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+            }
+        });
+
+        // Increment the total form count
+        totalForms.val(formCount + 1);
+
+        // Insert the new form at the end of the formset before the add button
+        newForm.insertBefore($(this));
+    });
+});
+</script>
+
+{% endblock %}
